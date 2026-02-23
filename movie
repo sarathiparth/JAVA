@@ -1,0 +1,40 @@
+class SeatNotAvailableException extends Exception {
+    public SeatNotAvailableException(String message) {
+        super(message);
+    }
+}
+
+class Movie {
+    private String movieName;
+    private int availableSeats;
+
+    public Movie(String movieName, int availableSeats) {
+        this.movieName = movieName;
+        this.availableSeats = availableSeats;
+    }
+
+    public void bookTicket(int seats) throws SeatNotAvailableException {
+        if (seats > availableSeats) {
+            throw new SeatNotAvailableException(
+                "Only " + availableSeats + " seats available. Booking failed!"
+            );
+        }
+        availableSeats -= seats;
+        System.out.println(seats + " tickets booked for " + movieName);
+        System.out.println("Remaining seats: " + availableSeats);
+    }
+}
+
+public class MovieBookingSystem {
+    public static void main(String[] args) {
+        Movie movie = new Movie("Interstellar", 5);
+
+        try {
+            movie.bookTicket(3);
+            movie.bookTicket(2);
+            movie.bookTicket(1);
+        } catch (SeatNotAvailableException e) {
+            System.out.println("Exception caught: " + e.getMessage());
+        }
+    }
+}
